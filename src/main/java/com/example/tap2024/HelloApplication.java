@@ -1,4 +1,4 @@
-git status package com.example.tap2024;
+package com.example.tap2024;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
