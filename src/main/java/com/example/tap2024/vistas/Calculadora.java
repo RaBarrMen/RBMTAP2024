@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 public class Calculadora extends Stage {
     private Scene escena;
     private VBox vcontenedor;
-
     private GridPane gdpTeclado;
     private TextField txtPantalla;
     private Button [][] arBotones = new Button[4][4];
@@ -24,7 +23,7 @@ public class Calculadora extends Stage {
     }
 
     private void CrearUI() {
-        txtPantalla = new TextField("0");
+        txtPantalla = new TextField("");
         gdpTeclado = new GridPane();
         CrearTeclado ();
         vcontenedor = new VBox(txtPantalla, gdpTeclado);
@@ -52,5 +51,54 @@ public class Calculadora extends Stage {
         txtPantalla.appendText(simbolo+"");
 
     }
+
+    /*private void setValue(char simbolo) {
+        if (simbolo == '=') {
+            try {
+                String expresion = txtPantalla.getText();
+                double resultado = evaluarExpresion(expresion);
+                txtPantalla.setText(String.valueOf(resultado));
+            } catch (Exception e) {
+                txtPantalla.setText("Error");
+            }
+        } else {
+            txtPantalla.appendText(simbolo + "");
+        }
+    }
+
+    private double evaluarExpresion(String expresion) {
+        String[] terminos = expresion.split("(?=[-+* /])|(?<=[-+* /])");
+
+        double resultado = Double.parseDouble(terminos[0]);
+
+        for (int i = 1; i < terminos.length; i += 2) {
+            char operador = terminos[i].charAt(0);
+            double siguienteNumero = Double.parseDouble(terminos[i + 1]);
+
+            switch (operador) {
+                case '+':
+                    resultado += siguienteNumero;
+                    break;
+                case '-':
+                    resultado -= siguienteNumero;
+                    break;
+                case '*':
+                    resultado *= siguienteNumero;
+                    break;
+                case '/':
+                    if (siguienteNumero != 0) {
+                        resultado /= siguienteNumero;
+                    } else {
+                        throw new ArithmeticException("División por cero no permitida.");
+                    }
+                    break;
+                default:
+                    throw new IllegalArgumentException("Operador no válido: " + operador);
+            }
+        }
+
+        return resultado;
+    } */
+
 
 }
