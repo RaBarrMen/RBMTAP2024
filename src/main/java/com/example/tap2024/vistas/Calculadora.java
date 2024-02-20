@@ -53,12 +53,12 @@ public class Calculadora extends Stage {
         }
     }
 
-    private void setValue(char simbolo) {
+    /*private void setValue(char simbolo) {
         txtPantalla.appendText(simbolo+"");
 
-    }
+    }*/
 
-    /*private void setValue(char simbolo) {
+    private void setValue(char simbolo) {
         if (simbolo == '=') {
             try {
                 String expresion = txtPantalla.getText();
@@ -73,7 +73,7 @@ public class Calculadora extends Stage {
     }
 
     private double evaluarExpresion(String expresion) {
-        String[] terminos = expresion.split("(?=[-+* /])|(?<=[-+* /])");
+        String[] terminos = expresion.split("(?=[-+*/])|(?<=[-+*/])");
 
         double resultado = Double.parseDouble(terminos[0]);
 
@@ -104,7 +104,7 @@ public class Calculadora extends Stage {
         }
 
         return resultado;
-    } */
+    }
 
 
 }
