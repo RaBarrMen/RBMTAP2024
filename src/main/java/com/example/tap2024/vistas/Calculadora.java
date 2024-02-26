@@ -3,6 +3,7 @@ package com.example.tap2024.vistas;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -12,8 +13,9 @@ public class Calculadora extends Stage {
     private VBox vcontenedor;
     private GridPane gdpTeclado;
     private TextField txtPantalla;
-    private Button [][] arBotones = new Button[4][4];
-    private Character[] arEtiquetas ={'7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '=', '+'};
+    private Button [][] arBotones = new Button[5][4];
+    private Character[] arEtiquetas ={'c', '%', 'x', 'x', '7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '=', '+'};
+    private StringBuilder operacionActual = new StringBuilder();
 
     public Calculadora() {
         CrearUI();
@@ -24,28 +26,37 @@ public class Calculadora extends Stage {
 
     private void CrearUI() {
         txtPantalla = new TextField("");
+        txtPantalla.setEditable(false);
         gdpTeclado = new GridPane();
-        CrearTeclado ();
+        CrearTeclado();
         vcontenedor = new VBox(txtPantalla, gdpTeclado);
         vcontenedor.setSpacing(5);
         escena = new Scene(vcontenedor, 200, 200);
+
+        escena.addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            char tecla = event.getCharacter().charAt(0);
+            if (Character.isDigit(tecla) || tecla == '.' || esOperador(tecla) || tecla == '=') {
+                event.consume();
+                procesarTecla(tecla);
+            }
+        });
+
         escena.getStylesheets()
                 .add(getClass().getResource("/estilos/calculadora.css").toString());
-
     }
 
     private void CrearTeclado() {
         int pos = 0;
-        char simbolo;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
-                arBotones[i][j] = new Button(arEtiquetas[pos]+"");
-                arBotones[i][j].setPrefSize(50,50);
+                arBotones[i][j] = new Button(arEtiquetas[pos] + "");
+                arBotones[i][j].setPrefSize(50, 50);
                 int finalPos = pos;
-                arBotones[i][j].setOnAction(event -> setValue(arEtiquetas[finalPos]));
-                gdpTeclado.add(arBotones[i][j],j,i);
+                arBotones[i][j].setOnAction(event -> procesarTecla(arEtiquetas[finalPos]));
 
-                if(arEtiquetas[pos] == '+' || arEtiquetas[pos] == '-' || arEtiquetas[pos] == '*' || arEtiquetas[pos] == '/' ){
+                gdpTeclado.add(arBotones[i][j], j, i);
+
+                if (esOperador(arEtiquetas[pos])) {
                     arBotones[i][j].setId(("color-operador"));
                 }
                 pos++;
@@ -53,23 +64,32 @@ public class Calculadora extends Stage {
         }
     }
 
-    /*private void setValue(char simbolo) {
-        txtPantalla.appendText(simbolo+"");
+    private boolean esOperador(char c) {
+        return c == '+' || c == '-' || c == '*' || c == '/';
+    }
 
-    }*/
-
-    private void setValue(char simbolo) {
-        if (simbolo == '=') {
+    private void procesarTecla(char tecla) {
+        if (tecla == '=') {
             try {
-                String expresion = txtPantalla.getText();
+                String expresion = operacionActual.toString();
                 double resultado = evaluarExpresion(expresion);
                 txtPantalla.setText(String.valueOf(resultado));
+                operacionActual.setLength(0);
+                operacionActual.append(resultado);
             } catch (Exception e) {
                 txtPantalla.setText("Error");
             }
+        } else if (tecla == 'c') {
+            limpiarPantalla();
         } else {
-            txtPantalla.appendText(simbolo + "");
+            operacionActual.append(tecla);
+            txtPantalla.setText(operacionActual.toString());
         }
+    }
+
+    private void limpiarPantalla() {
+        txtPantalla.clear();
+        operacionActual.setLength(0);
     }
 
     private double evaluarExpresion(String expresion) {
