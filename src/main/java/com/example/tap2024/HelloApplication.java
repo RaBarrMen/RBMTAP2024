@@ -1,5 +1,6 @@
 package com.example.tap2024;
 
+import com.example.tap2024.models.Conexion;
 import com.example.tap2024.vistas.Calculadora;
 import com.example.tap2024.vistas.memorama;
 import javafx.application.Application;
@@ -32,6 +33,8 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         stage.setMaximized(true);
+
+        Conexion.crearConexion();
     }
 
     private void CrearMenu() {

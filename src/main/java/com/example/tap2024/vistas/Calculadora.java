@@ -70,22 +70,24 @@ public class Calculadora extends Stage {
 
     private void procesarTecla(char tecla) {
         if (tecla == '=') {
-            try {
-                String expresion = operacionActual.toString();
-                double resultado = evaluarExpresion(expresion);
-                txtPantalla.setText(String.valueOf(resultado));
-                operacionActual.setLength(0);
-                operacionActual.append(resultado);
-            } catch (Exception e) {
-                txtPantalla.setText("Error");
-            }
+            String expresion = operacionActual.toString();
+            double resultado = evaluarExpresion(expresion);
+            txtPantalla.setText(String.valueOf(resultado));
+            operacionActual.setLength(0);
+            operacionActual.append(resultado);
         } else if (tecla == 'c') {
             limpiarPantalla();
+        } else if (esOperador(tecla)) {
+            // Cuando se presiona un operador, actualiza el TextField y reinicia la operación
+            operacionActual.setLength(0);
+            txtPantalla.setText(tecla + "");
         } else {
             operacionActual.append(tecla);
             txtPantalla.setText(operacionActual.toString());
         }
     }
+
+
 
     private void limpiarPantalla() {
         txtPantalla.clear();
@@ -115,16 +117,18 @@ public class Calculadora extends Stage {
                     if (siguienteNumero != 0) {
                         resultado /= siguienteNumero;
                     } else {
-                        throw new ArithmeticException("División por cero no permitida.");
+                        // Devuelve un valor especial (puedes ajustarlo según tus necesidades)
+                        return Double.NaN;  // NaN representa "Not a Number"
                     }
                     break;
                 default:
-                    throw new IllegalArgumentException("Operador no válido: " + operador);
+                    txtPantalla.setText("Operador no válido: " + operador);
             }
         }
 
         return resultado;
     }
+
 
 
 }
