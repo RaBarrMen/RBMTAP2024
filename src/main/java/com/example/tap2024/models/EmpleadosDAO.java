@@ -7,12 +7,60 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class EmpleadosDAO {
-    int id_empleado;
-    String nombre_empleado;
-    String rfc_empleado;
-    float salario;
-    String telefono;
-    String direccion;
+    private int id_empleado;
+    private String nombre_empleado;
+    private String rfc_empleado;
+    private Float salario;
+    private String telefono;
+    private String direccion;
+
+    public int getId_empleado() {
+        return id_empleado;
+    }
+
+    public void setId_empleado(int id_empleado) {
+        this.id_empleado = id_empleado;
+    }
+
+    public String getNombre_empleado() {
+        return nombre_empleado;
+    }
+
+    public void setNombre_empleado(String nombre_empleado) {
+        this.nombre_empleado = nombre_empleado;
+    }
+
+    public String getRfc_empleado() {
+        return rfc_empleado;
+    }
+
+    public void setRfc_empleado(String rfc_empleado) {
+        this.rfc_empleado = rfc_empleado;
+    }
+
+    public float getSalario() {
+        return salario;
+    }
+
+    public void setSalario(float salario) {
+        this.salario = salario;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
     public void INSERTAR(){
         String query = "insert into empleado(nombre_empleado,"+

@@ -16,7 +16,7 @@ public class Conexion {
             connection = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/"+
                     DB+"?allowPublicKeyRetrieval=true&useSSL=false",
                     USER,PWD);
-            System.out.println("Se concectó bien");
+            System.out.println("Se concectó bien UwU");
         } catch (Exception e){
             e.printStackTrace();
         }
