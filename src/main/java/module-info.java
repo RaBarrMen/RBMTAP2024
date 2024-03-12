@@ -10,4 +10,5 @@ module com.example.tap2024 {
     //clases de las dependencias
     requires java.sql;
     requires mysql.connector.j;
+    requires org.kordamp.bootstrapfx.core;
 }

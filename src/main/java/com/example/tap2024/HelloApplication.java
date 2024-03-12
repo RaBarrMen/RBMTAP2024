@@ -2,6 +2,7 @@ package com.example.tap2024;
 
 import com.example.tap2024.models.Conexion;
 import com.example.tap2024.vistas.Calculadora;
+import com.example.tap2024.vistas.CalculadoraEma;
 import com.example.tap2024.vistas.EmpleadoTaqueria;
 import com.example.tap2024.vistas.memorama;
 import javafx.application.Application;

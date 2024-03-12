@@ -13,8 +13,8 @@ public class Calculadora extends Stage {
     private VBox vcontenedor;
     private GridPane gdpTeclado;
     private TextField txtPantalla;
-    private Button [][] arBotones = new Button[5][4];
-    private Character[] arEtiquetas ={'c', '%', 'x', 'x', '7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '=', '+'};
+    private Button[][] arBotones = new Button[5][4];
+    private Character[] arEtiquetas = {'c', 'd', ' ', ' ', '7', '8', '9', '/', '4', '5', '6', '*', '1', '2', '3', '-', '0', '.', '=', '+'};
     private StringBuilder operacionActual = new StringBuilder();
 
     public Calculadora() {
@@ -70,24 +70,52 @@ public class Calculadora extends Stage {
 
     private void procesarTecla(char tecla) {
         if (tecla == '=') {
-            String expresion = operacionActual.toString();
-            double resultado = evaluarExpresion(expresion);
-            txtPantalla.setText(String.valueOf(resultado));
-            operacionActual.setLength(0);
-            operacionActual.append(resultado);
+            try {
+                String expresion = operacionActual.toString();
+                double resultado = evaluarExpresion(expresion);
+                txtPantalla.setText(String.valueOf(resultado));
+                operacionActual.setLength(0);
+                operacionActual.append(resultado);
+            } catch (ArithmeticException e) {
+                txtPantalla.setText("Error: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                txtPantalla.setText("Error: Número inválido");
+            }
         } else if (tecla == 'c') {
             limpiarPantalla();
+        } else if (tecla == 'd') {
+            borrarUltimoCaracter();
         } else if (esOperador(tecla)) {
-            // Cuando se presiona un operador, actualiza el TextField y reinicia la operación
-            operacionActual.setLength(0);
-            txtPantalla.setText(tecla + "");
-        } else {
-            operacionActual.append(tecla);
+            operacionActual.append(" ").append(tecla).append(" ");
             txtPantalla.setText(operacionActual.toString());
+        }else if (esOperador(tecla)) {
+            actualizarPantalla(tecla);
+            operacionActual.append(" ").append(tecla).append(" ");
+        }
+        else {
+            if (Character.isDigit(tecla) || (tecla == '.' && !operacionActual.toString().contains("."))) {
+                operacionActual.append(tecla);
+                txtPantalla.setText(operacionActual.toString());
+            } else {
+                txtPantalla.setText("Error: Caracter no válido");
+            }
+
         }
     }
 
+    private void actualizarPantalla(char operador) {
+        String textoActual = txtPantalla.getText();
+        txtPantalla.setText(textoActual + " " + operador + " ");
+    }
 
+
+    private void borrarUltimoCaracter() {
+        String texto = txtPantalla.getText();
+        if (!texto.isEmpty()) {
+            txtPantalla.setText(texto.substring(0, texto.length() - 1));
+            operacionActual.setLength(operacionActual.length() - 1);
+        }
+    }
 
     private void limpiarPantalla() {
         txtPantalla.clear();
@@ -95,8 +123,15 @@ public class Calculadora extends Stage {
     }
 
     private double evaluarExpresion(String expresion) {
-        String[] terminos = expresion.split("(?=[-+*/])|(?<=[-+*/])");
+        try {
+            return evaluarExpresionRecursiva(expresion.split(" "));
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            txtPantalla.setText("Expresión inválida");
+            return Double.NaN;
+        }
+    }
 
+    private double evaluarExpresionRecursiva(String[] terminos) {
         double resultado = Double.parseDouble(terminos[0]);
 
         for (int i = 1; i < terminos.length; i += 2) {
@@ -117,7 +152,6 @@ public class Calculadora extends Stage {
                     if (siguienteNumero != 0) {
                         resultado /= siguienteNumero;
                     } else {
-                        // Devuelve un valor especial (puedes ajustarlo según tus necesidades)
                         return Double.NaN;  // NaN representa "Not a Number"
                     }
                     break;
@@ -128,7 +162,4 @@ public class Calculadora extends Stage {
 
         return resultado;
     }
-
-
-
 }
